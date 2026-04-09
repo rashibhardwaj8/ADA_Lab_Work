@@ -1,74 +1,121 @@
-# --DIJKSTRA ALGORITHM --
+import java.util.*;
 
-import heapq
+// Class for edges in Dijkstra
+class Pair {
+    String node;
+    int weight;
 
-def dijkstra_shortest_path(graph, source):
-    # Initialize distances with infinity
-    distances = {}
-    for vertex in graph:
-        distances[vertex] = float('inf')
-
-    distances[source] = 0
-
-    # Priority queue (min-heap)
-    min_heap = [(0, source)]
-
-    while min_heap:
-        current_distance, current_node = heapq.heappop(min_heap)
-
-        # Skip if we already found a shorter path
-        if current_distance > distances[current_node]:
-            continue
-
-        for neighbor, weight in graph[current_node]:
-            new_distance = current_distance + weight
-
-            if new_distance < distances[neighbor]:
-                distances[neighbor] = new_distance
-                heapq.heappush(min_heap, (new_distance, neighbor))
-
-    return distances
-
-
-# Example Graph for Dijkstra
-graph_data = {
-    'A': [('B', 2), ('C', 5)],
-    'B': [('C', 1), ('D', 4)],
-    'C': [('D', 2)],
-    'D': []
+    Pair(String node, int weight) {
+        this.node = node;
+        this.weight = weight;
+    }
 }
 
-print("Dijkstra Result:", dijkstra_shortest_path(graph_data, 'A'))
+// Class for Bellman-Ford edges
+class Edge {
+    int u, v, w;
 
+    Edge(int u, int v, int w) {
+        this.u = u;
+        this.v = v;
+        this.w = w;
+    }
+}
 
-# ------------------ BELLMAN-FORD ALGORITHM ------------------
+public class GraphAlgorithms {
 
-def bellman_ford_algorithm(edges, vertices, source):
-    # Initialize distances
-    distance = [float('inf')] * vertices
-    distance[source] = 0
+    // ------------------ DIJKSTRA ------------------
+    public static Map<String, Integer> dijkstra(Map<String, List<Pair>> graph, String source) {
 
-    # Relax edges (V-1 times)
-    for i in range(vertices - 1):
-        for u, v, w in edges:
-            if distance[u] != float('inf') and distance[u] + w < distance[v]:
-                distance[v] = distance[u] + w
+        Map<String, Integer> distances = new HashMap<>();
 
-    # Check for negative weight cycle
-    for u, v, w in edges:
-        if distance[u] != float('inf') and distance[u] + w < distance[v]:
-            print("Graph contains a negative weight cycle!")
-            return None
+        // Initialize distances
+        for (String vertex : graph.keySet()) {
+            distances.put(vertex, Integer.MAX_VALUE);
+        }
+        distances.put(source, 0);
 
-    return distance
+        // Min Heap (priority queue)
+        PriorityQueue<Pair> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.weight));
+        pq.add(new Pair(source, 0));
 
+        while (!pq.isEmpty()) {
+            Pair current = pq.poll();
+            String currentNode = current.node;
+            int currentDistance = current.weight;
 
-# Example Graph for Bellman-Ford
-edge_list = [
-    (0, 1, 4),
-    (0, 2, 6),
-    (1, 2, -2),
-    (2, 3, 3)
-]
+            // Skip outdated entries
+            if (currentDistance > distances.get(currentNode)) continue;
 
-print("Bellman-Ford Result:", bellman_ford_algorithm(edge_list, 4, 0))
+            for (Pair neighbor : graph.get(currentNode)) {
+                int newDistance = currentDistance + neighbor.weight;
+
+                if (newDistance < distances.get(neighbor.node)) {
+                    distances.put(neighbor.node, newDistance);
+                    pq.add(new Pair(neighbor.node, newDistance));
+                }
+            }
+        }
+
+        return distances;
+    }
+
+    // ------------------ BELLMAN-FORD ------------------
+    public static int[] bellmanFord(List<Edge> edges, int vertices, int source) {
+
+        int[] distance = new int[vertices];
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        distance[source] = 0;
+
+        // Relax edges V-1 times
+        for (int i = 0; i < vertices - 1; i++) {
+            for (Edge e : edges) {
+                if (distance[e.u] != Integer.MAX_VALUE &&
+                        distance[e.u] + e.w < distance[e.v]) {
+                    distance[e.v] = distance[e.u] + e.w;
+                }
+            }
+        }
+
+        // Check negative cycle
+        for (Edge e : edges) {
+            if (distance[e.u] != Integer.MAX_VALUE &&
+                    distance[e.u] + e.w < distance[e.v]) {
+                System.out.println("Graph contains a negative weight cycle!");
+                return null;
+            }
+        }
+
+        return distance;
+    }
+
+    // ------------------ MAIN ------------------
+    public static void main(String[] args) {
+
+        // Dijkstra Graph
+        Map<String, List<Pair>> graph = new HashMap<>();
+
+        graph.put("A", Arrays.asList(new Pair("B", 2), new Pair("C", 5)));
+        graph.put("B", Arrays.asList(new Pair("C", 1), new Pair("D", 4)));
+        graph.put("C", Arrays.asList(new Pair("D", 2)));
+        graph.put("D", new ArrayList<>());
+
+        System.out.println("Dijkstra Result: " + dijkstra(graph, "A"));
+
+        // Bellman-Ford Graph
+        List<Edge> edges = new ArrayList<>();
+        edges.add(new Edge(0, 1, 4));
+        edges.add(new Edge(0, 2, 6));
+        edges.add(new Edge(1, 2, -2));
+        edges.add(new Edge(2, 3, 3));
+
+        int[] result = bellmanFord(edges, 4, 0);
+
+        if (result != null) {
+            System.out.print("Bellman-Ford Result: ");
+            for (int d : result) {
+                System.out.print(d + " ");
+            }
+        }
+    }
+}
