@@ -1,71 +1,106 @@
-# Sorting Algorithms Analysis (ADA Lab - Unit 1)
+Algorithm Design & Analysis – Unit 1-4 Lab (Java Implementation)
+Overview
+This repository contains Java implementations of fundamental algorithms from Algorithm Design & Analysis (ADA), along with empirical analysis of sorting algorithms. The project demonstrates core paradigms including Greedy, Dynamic Programming, Divide & Conquer, and Backtracking, and includes performance evaluation using step counts and graphical visualization.
 
-This project implements and analyzes three sorting algorithms:
+Implemented Algorithms
+1. Sorting Algorithms
+Bubble Sort
+Selection Sort
+Insertion Sort
+Each algorithm is implemented with:
 
-- Bubble Sort
-- Selection Sort
-- Insertion Sort
+Ascending and descending order support
+Step count tracking (comparisons + swaps)
+Analysis across best, average, and worst cases
+2. Searching Algorithms
+Linear Search
+Binary Search
+3. Greedy Algorithms
+Fractional Knapsack
+Dijkstra’s Shortest Path Algorithm
+4. Dynamic Programming
+0/1 Knapsack
+Longest Common Subsequence (LCS)
+Bellman-Ford Algorithm
+5. Divide & Conquer
+Merge Sort
+Quick Sort
+Matrix Multiplication
+6. Backtracking
+N-Queens Problem
+Sorting Analysis
+The project includes an empirical analysis of sorting algorithms:
 
-The performance of each algorithm is analyzed using the Step-Count Method.
+Input Cases
+Best Case (sorted)
+Average Case (random)
+Worst Case (reverse sorted)
+Metrics
+Step count (basic operations)
+Input sizes: 10, 20, 30, 40
+Output
+Console output showing sorted arrays and step counts
 
-----------------------------------------------------
+CSV file (results.csv) storing:
 
-## Objective
+Algorithm, Input Size, Steps
+Graph Visualization
+Graphs are generated using Python (matplotlib).
 
-- Sort numbers in ascending and descending order.
-- Count key operations (comparisons and swaps).
-- Analyze Best, Average, and Worst cases.
-- Compare performance for input sizes:
-  10, 20, 30, 40.
-- Plot graphs for Input Size vs Step Count.
+Steps to Generate Graphs
+Run Java program:
 
-----------------------------------------------------
+javac sorting_analysis.java
+java sorting_analysis
+Ensure results.csv is created
 
-## Step-Count Method
+Run Python script:
 
-We count:
-- 1 comparison = 1 step
-- 1 swap = 3 steps (assignment operations)
+python plot_graph.py
+Output:
 
-This helps measure time complexity practically.
+Graph displayed OR
+Saved as .png file in project folder
+Project Structure
+├── sorting_analysis.java
+├── Knapsack01.java
+├── FractionalKnapsack.java
+├── MatrixMultiplication.java
+├── LCS.java
+├── Dijkstra.java
+├── BellmanFord.java
+├── NQueens.java
+├── results.csv
+├── plot_graph.py
+└── README.md
+Key Concepts Demonstrated
+Time complexity vs empirical analysis
+Greedy vs Dynamic Programming trade-offs
+Recursion and backtracking
+Data structures (arrays, lists, maps, priority queues)
+Algorithm optimization techniques
+Requirements
+Java
+JDK 8 or higher
+Python (for graphs)
+Python 3.x
 
-----------------------------------------------------
+Libraries:
 
-## Cases Analyzed
+pip install matplotlib pandas
+Observations
+Bubble and Selection Sort show O(n²) growth
+Insertion Sort performs better on nearly sorted data
+Step count increases significantly with input size
+Graphs clearly illustrate performance differences
+Future Improvements
+Add Merge Sort and Quick Sort to analysis
+Include runtime benchmarking (System.nanoTime)
+Separate graphs for best/average/worst cases
+Use advanced visualization (Seaborn / JFreeChart)
+Implement space optimization techniques
+Author
+Rashi
 
-1. Best Case → Already sorted input
-2. Average Case → Randomized input
-3. Worst Case → Reverse sorted input
-
-----------------------------------------------------
-
-## How to Run
-
-1. Install matplotlib:
-
-   pip install matplotlib
-
-2. Run the program:
-
-   python sorting_analysis.py
-
-3. Graphs will be automatically saved inside:
-
-   screenshots_of_graphs/
-
-----------------------------------------------------
-
-## Files Included
-
-- sorting_analysis.py → Main implementation
-- sample_output.txt → Example output
-- screenshots_of_graphs/ → Generated graphs
-
-----------------------------------------------------
-
-## Expected Learning
-
-- Understanding sorting algorithm behavior
-- Comparing time complexities
-- Practical analysis using step counting
-- Graphical performance comparison
+License
+This project is for academic and educational purposes.
